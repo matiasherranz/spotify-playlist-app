@@ -1,6 +1,6 @@
 // Replace with your app's client ID, redirect URI and desired scopes
-export const clientId = '5f93f2ea4e3d4202be9e97a1ba37d3c5'
-export const redirectUri = 'http://localhost:3000/'
+export const clientId = process.env.CLIENT_ID
+export const redirectUri = process.env.REDIRECT_URI
 export const scopes = [
   'user-read-currently-playing',
   'user-read-recently-played',
