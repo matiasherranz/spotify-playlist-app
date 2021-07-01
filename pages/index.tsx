@@ -6,10 +6,14 @@ import Router from 'next/router'
 
 import { SPOTIFY_AUTH_URL } from '../utils/constants'
 import { getUrlParams } from '../utils'
+import { getCookie, setCookie } from '../utils/cookieStorage'
+
+// Spotify tokens expire after one hour
+const tokenExpirationHours = 1
 
 export const Home = (): JSX.Element => {
   useEffect(() => {
-    let token = getFromCookie()
+    let token = getCookie('token')
     const urlParams = getUrlParams()
 
     // Clean the URL bar to avoid displaying the access token to the user
@@ -17,7 +21,7 @@ export const Home = (): JSX.Element => {
 
     if (!token && urlParams.access_token) {
       token = urlParams.access_token
-      saveCookie(token)
+      setCookie('token', token, tokenExpirationHours)
     }
 
     if (token) {
@@ -31,7 +35,7 @@ export const Home = (): JSX.Element => {
   return (
     <div className="container">
       <Head>
-        <title>Spotify Playlist App</title>
+        <title>Spotify Playlist App | Welcome!</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
