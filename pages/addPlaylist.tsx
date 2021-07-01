@@ -1,14 +1,18 @@
-import { useEffect, useState } from 'react'
+import { SyntheticEvent, useState } from 'react'
 
 import Head from 'next/head'
 import Router from 'next/router'
 import { useRouter } from 'next/router'
 
-import { getUrlParams } from '../utils/index'
-
 export const AddPlaylist = (): JSX.Element => {
+  const [formTitle, setFormTitle] = useState('')
   const router = useRouter()
-  console.log('router.query.first: ', router.query.first)
+
+  const handleSave = (event: SyntheticEvent): void => {
+    event.preventDefault()
+    console.log('handling submit! formTitle: ', formTitle)
+  }
+
   return (
     <div>
       <Head>
@@ -23,18 +27,22 @@ export const AddPlaylist = (): JSX.Element => {
               : 'Give your new playlist an awesome title :-)'}
           </h1>
 
-          <form>
-            <div className="controls">
-              <input
-                type="text"
-                id="id"
-                name="id"
-                placeholder="Give your new playlist a title!"
-              />
+          <form onSubmit={handleSave}>
+            <input
+              type="text"
+              id="id"
+              name="id"
+              placeholder="Give your new playlist a title! (of at least 4 characters)"
+              value={formTitle}
+              onChange={(e) => setFormTitle(e.target.value)}
+            />
 
-              <input type="reset" value="Clear" />
-              <input type="submit" value="Save!" />
-            </div>
+            <input type="reset" value="Clear" />
+            <input
+              type="submit"
+              value="Save!"
+              disabled={!formTitle || !formTitle.length > 4}
+            />
           </form>
         </div>
       </div>
@@ -63,7 +71,7 @@ export const AddPlaylist = (): JSX.Element => {
         .content {
           position: absolute;
           top: 20%;
-          width: 50%;
+          width: 55%;
           height: 50vh;
         }
 
@@ -71,23 +79,28 @@ export const AddPlaylist = (): JSX.Element => {
           font: 1rem 'Fira Sans', sans-serif;
         }
 
-        .controls {
-          padding-top: 1rem;
-          display: grid;
-          grid-template-rows: repeat(3, 1fr);
-          grid-template-columns: 1fr 2fr;
-          gap: 0.7rem;
-        }
-
         label {
           font-size: 0.8rem;
           justify-self: end;
+        }
+
+        input[type='text'] {
+          padding: 10px;
+          margin: 10px 0; /* Top and bottom margin */
+          box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+          width: 100%;
         }
 
         input[type='reset'],
         input[type='submit'] {
           width: 5rem;
           justify-self: end;
+          padding: 10px;
+          margin: 10px 0; /* Top and bottom margin */
+        }
+
+        input[type='submit'] {
+          margin: 10px 10px 0 10px; /* Top and bottom margin */
         }
 
         input[type='reset'] {
