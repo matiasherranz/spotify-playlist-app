@@ -4,12 +4,12 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Router from 'next/router'
 
-import { SPOTIFY_AUTH_URL } from '../utils/constants'
+import {
+  SPOTIFY_AUTH_URL,
+  SPOTIFY_TOKEN_EXPIRATION_HOURS,
+} from '../utils/constants'
 import { getUrlParams } from '../utils'
 import { getCookie, setCookie } from '../utils/cookieStorage'
-
-// Spotify tokens expire after one hour
-const tokenExpirationHours = 1
 
 export const Home = (): JSX.Element => {
   useEffect(() => {
@@ -21,7 +21,7 @@ export const Home = (): JSX.Element => {
 
     if (!token && urlParams.access_token) {
       token = urlParams.access_token
-      setCookie('token', token, tokenExpirationHours)
+      setCookie('token', token, SPOTIFY_TOKEN_EXPIRATION_HOURS)
     }
 
     if (token) {
@@ -95,20 +95,6 @@ export const Home = (): JSX.Element => {
           justify-content: center;
           align-items: center;
 
-          /* background: rgb(124, 188, 92);
-        background: linear-gradient(
-          300deg,
-          rgba(124, 188, 92, 0.5536589635854341) 9%,
-          rgba(173, 210, 166, 0.5144432773109244) 69%,
-          rgba(211, 228, 196, 0.4108018207282913) 77%
-        ); */
-          /* background: rgb(124, 188, 92);
-        background: linear-gradient(
-          300deg,
-          rgba(124, 188, 92, 0.5536589635854341) 9%,
-          rgba(173, 210, 166, 0.40800070028011204) 63%,
-          rgba(211, 228, 196, 0.4108018207282913) 77%
-        ); */
           background: rgb(124, 188, 92);
           background: linear-gradient(
             300deg,
