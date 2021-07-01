@@ -1,55 +1,54 @@
+import NowPlaying from './NowPlaying'
 import { PlaylistsDataType } from '../utils/sessionStorage'
 
 interface ISidebar {
   playlists: PlaylistsDataType
-  removePlaylist: () => void
+  removePlaylist: (id: string) => void
+  token: string
 }
 
-const Sidebar = ({ playlists, removePlaylist }: ISidebar): JSX.Element => {
+const Sidebar = ({
+  playlists,
+  removePlaylist,
+  token,
+}: ISidebar): JSX.Element => {
   if (!playlists) return null
   return (
     <div className="sidebar">
-      <main>
-        <div className="grid">
+      <article role="main">
+        <aside>
+          <p className="sidebarTitle">
+            Select a playlist to see its songs add the song current playing to
+          </p>
           {playlists.map((pl) => {
             return (
-              <a key={pl.id} href="" className="card">
+              <div key={pl.id} className="card">
                 <h3>{pl.title}</h3>
                 <p>This playlist has {pl.songs.length} songs</p>
-              </a>
+              </div>
             )
           })}
-        </div>
-      </main>
+          <NowPlaying token={token} />
+        </aside>
+      </article>
 
       <style jsx>{`
         .sidebar {
-          min-height: 100vh;
-          padding: 0 0.5rem;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          width: 25%;
         }
 
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
+        .sidebarTitle {
+          text-align: center;
+          vertical-align: middle;
+          display: table-cell;
         }
 
-        .grid {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-wrap: wrap;
-
-          max-width: 350px;
-          margin-top: 3rem;
+        aside {
+          float: left;
+          width: 30%;
+          /* color: #ccc; */
+          /* background-color: #d3e4c4; */
+          border-radius: 4px;
+          padding: 10px;
         }
 
         .card {
@@ -80,13 +79,6 @@ const Sidebar = ({ playlists, removePlaylist }: ISidebar): JSX.Element => {
           margin: 0;
           font-size: 1.25rem;
           line-height: 1.5;
-        }
-
-        @media (max-width: 600px) {
-          .grid {
-            width: 100%;
-            flex-direction: column;
-          }
         }
       `}</style>
     </div>
