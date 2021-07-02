@@ -1,5 +1,30 @@
 # Next.js Playlist Playgroung (using Spotify as source for songs!)
 
+## App screenshots
+
+**Landing and login screen**
+
+![image](https://user-images.githubusercontent.com/485403/124318378-f2a89a80-db4e-11eb-892e-e311ff301049.png)
+
+**App Dashboard**
+
+A playlist with no songs selected:
+
+![image](https://user-images.githubusercontent.com/485403/124318450-0d7b0f00-db4f-11eb-98aa-23a367661ea4.png)
+
+A playlist with some songs selected:
+
+![image](https://user-images.githubusercontent.com/485403/124318334-e290bb00-db4e-11eb-875e-e3adc1a2044d.png)
+
+**Screen to create new playlists**
+
+When you are adding your first playlist
+![image](https://user-images.githubusercontent.com/485403/124318174-9e9db600-db4e-11eb-9cf2-0eeb144e514c.png)
+
+For the subsequent playlists after the first one
+![image](https://user-images.githubusercontent.com/485403/124318637-4e732380-db4f-11eb-841a-65fe9dd2c7c7.png)
+
+
 ## Tech stach used
 
 ### NodeJS
