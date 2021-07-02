@@ -12,8 +12,9 @@ import {
   saveToStorage,
   PlaylistsDataType,
   addSongToPlaylist,
+  removeSongfromPlaylist,
 } from '../utils/sessionStorage'
-import { SongType } from '../utils/types'
+import { CurrentSongDataType } from '../utils/types'
 
 export const Dashboard = (): JSX.Element => {
   const [selectedPlaylist, setSelectedPlaylist] = useState<string>()
@@ -49,6 +50,12 @@ export const Dashboard = (): JSX.Element => {
   const handleRemovePlaylist = (id: string) => {
     const filtered: PlaylistsDataType = playlists.filter((pl) => pl.id !== id)
 
+    if (filtered.length > 0) {
+      setSelectedPlaylist(filtered[0].id)
+    } else {
+      Router.push('/addPlaylist?first=true')
+    }
+
     // Update the state
     setPlaylists(filtered)
 
@@ -60,7 +67,10 @@ export const Dashboard = (): JSX.Element => {
     setSelectedPlaylist(id)
   }
 
-  const handleAddSongToPlaylist = (song: SongType, playlist: string): void => {
+  const handleAddSongToPlaylist = (
+    song: CurrentSongDataType,
+    playlist: string
+  ): void => {
     // Update storage
     const updatedPlayslists = addSongToPlaylist(playlist, song)
 
@@ -70,6 +80,21 @@ export const Dashboard = (): JSX.Element => {
     // Keep the updated playlist selected
     setSelectedPlaylist(playlist)
   }
+
+  const handleRemoveSong = (index: number) => {
+    // Update storage
+    const updated = removeSongfromPlaylist(selectedPlaylist, index)
+
+    // Update state
+    setPlaylists(updated)
+
+    // Keep the updated playlist selected
+    setSelectedPlaylist(selectedPlaylist)
+  }
+
+  const selectedPlaylistData = playlists
+    ? playlists.find((pl) => pl.id === selectedPlaylist)
+    : undefined
 
   return (
     <div className="container">
@@ -88,11 +113,8 @@ export const Dashboard = (): JSX.Element => {
           token={authToken}
         />
         <PlaylistDetail
-          playlist={
-            playlists
-              ? playlists.find((pl) => pl.id === selectedPlaylist)
-              : undefined
-          }
+          playlist={selectedPlaylistData}
+          removeSong={handleRemoveSong}
         />
       </article>
 
