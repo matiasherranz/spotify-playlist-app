@@ -1,16 +1,5 @@
 import { generateHash } from '.'
-
-type SongType = {
-  cover: string
-  artist: string
-  title: string
-}
-
-type PlaylistType = {
-  id: string
-  title: string
-  songs: SongType[]
-}
+import { PlaylistType } from './types'
 
 export type PlaylistsDataType = PlaylistType[]
 
@@ -33,4 +22,23 @@ export const addNewPlaylist = (title: string): void => {
 
   playlists.push({ title, songs: [], id: generateHash() })
   saveToStorage('playlists', playlists)
+}
+
+export const addSongToPlaylist = (
+  playlistId: string,
+  song: ApiSongType
+): PlaylistType[] => {
+  const playlists = getFromStorage('playlists')
+
+  playlists.forEach((pl: PlaylistType) => {
+    if (pl.id === playlistId) {
+      pl.songs.push({
+        albumCover: song.item.album.images[0].url,
+        artist: song.item.artists[0].name,
+        name: song.item.name,
+      })
+    }
+  })
+  saveToStorage('playlists', playlists)
+  return playlists
 }
