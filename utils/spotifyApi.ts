@@ -10,6 +10,11 @@ async function getData(url = '', token = '') {
     },
     referrerPolicy: 'no-referrer',
   })
+
+  // User is not playing on Spotify
+  if (response.status === 204) return null
+
+  // User is playing something
   return response.json()
 }
 
