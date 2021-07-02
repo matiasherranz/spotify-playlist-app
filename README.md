@@ -18,7 +18,11 @@ A playlist with some songs selected:
 
 **Screen to create new playlists**
 
+When you are adding your first playlist
 ![image](https://user-images.githubusercontent.com/485403/124318174-9e9db600-db4e-11eb-9cf2-0eeb144e514c.png)
+
+For the subsequent playlists after the first one
+![image](https://user-images.githubusercontent.com/485403/124318637-4e732380-db4f-11eb-841a-65fe9dd2c7c7.png)
 
 
 ## Tech stach used
