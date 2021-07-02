@@ -1,46 +1,97 @@
+import { useState } from 'react'
+
 import NowPlaying from './NowPlaying'
 import { PlaylistsDataType } from '../utils/sessionStorage'
+import { SongType } from '../utils/types'
 
 interface ISidebar {
   playlists: PlaylistsDataType
   removePlaylist: (id: string) => void
+  selectPlaylist: (id: string) => void
+  addSongToPlaylist: (song: SongType, playlist: string) => void
+  selectedPlaylist: string
   token: string
 }
 
 const Sidebar = ({
   playlists,
   removePlaylist,
+  selectPlaylist,
+  selectedPlaylist,
+  addSongToPlaylist,
   token,
 }: ISidebar): JSX.Element => {
   if (!playlists) return null
+
+  const [currentSong, setCurrentSong] = useState()
+
   return (
     <div className="sidebar">
       <article role="main">
         <aside>
-          <p className="sidebarTitle">
-            Select a playlist to see its songs add the song current playing to
-          </p>
-          {playlists.map((pl) => {
-            return (
-              <div key={pl.id} className="card">
-                <h3>{pl.title}</h3>
-                <p>This playlist has {pl.songs.length} songs</p>
-              </div>
-            )
-          })}
+          <div className="playlists">
+            {playlists.map((pl) => {
+              return (
+                <div
+                  key={pl.id}
+                  className={`card ${
+                    selectedPlaylist === pl.id ? 'selected' : ''
+                  }`}
+                  onClick={() => selectPlaylist(pl.id)}
+                >
+                  <h3>{pl.title}</h3>
+                  {/* <p>This playlist has {pl.songs.length} songs</p> */}
+                </div>
+              )
+            })}
+          </div>
+
+          <div className="info-card">
+            <p className="info-card-text">
+              💡 Click a playlist above to see the songs it has. You can also
+              add it new ones!
+            </p>
+          </div>
 
           <div className="card-no-border">
             <a className="btn" href="/addPlaylist">
-              Create new playlist
+              Add playlist
             </a>
           </div>
 
-          <NowPlaying token={token} />
+          <NowPlaying
+            token={token}
+            currentSong={currentSong}
+            setCurrentSong={setCurrentSong}
+          />
+
+          <div className="info-card">
+            <p className="info-card-text">
+              💡 Click the &quot;Add Song&quot; button below to add the current
+              song to the selected playlist.
+            </p>
+          </div>
+
+          <div
+            className="card-no-border"
+            onClick={() => addSongToPlaylist(currentSong, selectedPlaylist)}
+          >
+            <a className="btn">Add song</a>
+          </div>
         </aside>
       </article>
 
       <style jsx>{`
-        .sidebar {
+        .playlists {
+          max-height: 50vh;
+          overflow: scroll;
+          -ms-overflow-style: none; /* for Internet Explorer, Edge */
+          scrollbar-width: none; /* for Firefox */
+          overflow-y: scroll;
+        }
+
+        .playlists::-webkit-scrollbar {
+          display: none; /* for Chrome, Safari, and Opera */
         }
 
         .btn {
@@ -49,7 +100,7 @@ const Sidebar = ({
           border: 0.2em solid #1ecd97;
           color: #1ecd97;
           cursor: pointer;
-          font-size: 2vmin;
+          font-size: 16px;
           padding: 0.7em 1.5em;
           text-transform: uppercase;
           transition: all 0.25s ease;
@@ -61,12 +112,6 @@ const Sidebar = ({
           color: #333;
         }
 
-        .sidebarTitle {
-          text-align: center;
-          vertical-align: middle;
-          display: table-cell;
-        }
-
         aside {
           float: left;
           width: 30%;
@@ -75,21 +120,37 @@ const Sidebar = ({
         }
 
         .card-no-border {
-          margin-top: 1rem;
-          margin-bottom: 1rem;
-          margin-left: 20px;
           flex-basis: 80%;
-          padding: 1.2rem;
+          padding-bottom: 10px;
           color: inherit;
           text-decoration: none;
           transition: color 0.15s ease, border-color 0.15s ease;
+          display: flex;
+          justify-content: center;
+        }
+
+        .info-card {
+          margin-top: 10px;
+          margin-bottom: 10px;
+          flex-basis: 80%;
+          padding: 7px;
+          text-decoration: none;
+          border: 1px solid #7b8898;
+          border-radius: 10px;
+          transition: color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .info-card-text {
+          text-align: center;
+          vertical-align: middle;
+          display: table-cell;
         }
 
         .card {
-          margin-top: 1rem;
-          margin-bottom: 1rem;
+          margin-top: 5px;
+          margin-bottom: 5px;
           flex-basis: 80%;
-          padding: 1.2rem;
+          padding: 10px;
           text-align: left;
           color: inherit;
           text-decoration: none;
@@ -105,9 +166,16 @@ const Sidebar = ({
           border-color: #0070f3;
         }
 
+        .card.selected {
+          color: #00aef3;
+          border-color: #0070f361;
+        }
+
         .card h3 {
           margin: 0 0 1rem 0;
-          font-size: 1.5rem;
+          font-size: 18px;
+          max-width: 90%;
+          text-overflow: ellipsis;
         }
 
         .card p {
