@@ -11,12 +11,14 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --ext js",
     "test": "jest",
-    "test-all": "yarn lint && yarn type-check && yarn test"
+    "test-all": "yarn lint && yarn type-check && yarn test",
+    "jest:coverage": "jest --coverage",
+    "pretty-quick": "pretty-quick"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "yarn run type-check"
+      "pre-commit": "pretty-quick --staged",
+      "pre-push": "pretty-quick --staged"
     }
   },
   "lint-staged": {
@@ -47,7 +49,8 @@
     "jest": "^27.0.4",
     "jest-watch-typeahead": "^0.6.1",
     "lint-staged": "^10.0.10",
-    "prettier": "^2.0.2",
+    "prettier": "^2.3.2",
+    "pretty-quick": "^3.1.1",
     "typescript": "^4.1.3"
   }
 }
