@@ -4,14 +4,20 @@ import { useEffect, useState } from 'react'
 import { getCurrentlyPlaying } from '../utils/spotifyApi'
 import { POLLING_INTERVAL } from '../utils/constants'
 import { deleteCookie } from '../utils/cookieStorage'
+import { ApiSongType, SongType } from '../utils/types'
 
 interface INowPlaying {
   token: string
+  currentSong: SongType
+  setCurrentSong: (song) => void
 }
 
-const NowPlaying = ({ token }: INowPlaying): JSX.Element => {
+const NowPlaying = ({
+  token,
+  currentSong,
+  setCurrentSong,
+}: INowPlaying): JSX.Element => {
   const [timeoutHandler, setTimeoutHandler] = useState()
-  const [currentSong, setCurrentSong] = useState()
   const [isPlaying, setIsPlaying] = useState(false)
 
   useEffect(() => {
