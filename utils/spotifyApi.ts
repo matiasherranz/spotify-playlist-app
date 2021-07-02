@@ -1,4 +1,5 @@
 import { SPOTIFY_PLAYER_URL } from './constants'
+import { CurrentSongDataType } from '../utils/types'
 
 async function getData(url = '', token = '') {
   const response = await fetch(url, {
@@ -18,16 +19,10 @@ async function getData(url = '', token = '') {
   return response.json()
 }
 
-type APIResponseType = {
-  item: Record<string, unknown>
-  is_playing: boolean
-  progress_ms: number
-}
-
 export const getCurrentlyPlaying = async (
   token: string
-): Promise<APIResponseType | null> => {
-  const data: APIResponseType = await getData(SPOTIFY_PLAYER_URL, token)
+): Promise<CurrentSongDataType | null> => {
+  const data: CurrentSongDataType = await getData(SPOTIFY_PLAYER_URL, token)
   if (!data) return null
 
   return {
