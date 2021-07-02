@@ -3,6 +3,7 @@ import { SyntheticEvent, useState } from 'react'
 import Head from 'next/head'
 import Router from 'next/router'
 import { useRouter } from 'next/router'
+import { addNewPlaylist } from '../utils/sessionStorage'
 
 export const AddPlaylist = (): JSX.Element => {
   const [formTitle, setFormTitle] = useState('')
@@ -10,7 +11,8 @@ export const AddPlaylist = (): JSX.Element => {
 
   const handleSave = (event: SyntheticEvent): void => {
     event.preventDefault()
-    console.log('handling submit! formTitle: ', formTitle)
+    addNewPlaylist(formTitle)
+    Router.push('/dashboard')
   }
 
   return (
@@ -38,6 +40,11 @@ export const AddPlaylist = (): JSX.Element => {
             />
 
             <input type="reset" value="Clear" />
+            <input
+              type="button"
+              value="Cancel"
+              onClick={() => Router.push('/dashboard')}
+            />
             <input
               type="submit"
               value="Save!"
@@ -92,11 +99,16 @@ export const AddPlaylist = (): JSX.Element => {
         }
 
         input[type='reset'],
+        input[type='button'],
         input[type='submit'] {
           width: 5rem;
           justify-self: end;
           padding: 10px;
           margin: 10px 0; /* Top and bottom margin */
+        }
+
+        input[type='button'] {
+          margin: 10px 10px 0 5px; /* Top and bottom margin */
         }
 
         input[type='submit'] {
