@@ -151,7 +151,7 @@ const Sidebar = ({
         }
 
         .card {
-          margin-top: 5px;
+          margin-top: 5px
           margin-bottom: 5px;
           display: flex;
           justify-content: center;
