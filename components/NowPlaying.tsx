@@ -70,7 +70,7 @@ const NowPlaying = ({
   }
 
   return (
-    <div className="now-playing">
+    <div className="now-playing" role="nowPlaying">
       {/* User is not playing anything on Spotify */}
       {!currentSong && (
         <div className="not-playing-msg">
@@ -106,7 +106,7 @@ const NowPlaying = ({
         <>
           <div className="not-playing-msg">
             <div className="now-playing-name">Go play music on Spotify!</div>
-            <div className="now-playing-artist">
+            <div className="now-playing-artist" role="waiting">
               Go to Spotify, play something and it will show up here :-)
             </div>
           </div>

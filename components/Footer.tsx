@@ -19,7 +19,7 @@ export const Footer = (): JSX.Element => {
           and ReactJS
           <Image
             src="/react.svg"
-            alt="NextJS logo"
+            alt="ReactJS logo"
             height={'26'}
             width={'26'}
           />
