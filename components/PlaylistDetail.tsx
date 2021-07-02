@@ -69,7 +69,7 @@ const PlaylistDetail = ({
           background-color: #d9e4e2c9;
           border: 1px solid #eaeaea;
           border-radius: 10px;
-          min-height: 90vh;
+          min-height: 650px;
         }
 
         .removeSong {

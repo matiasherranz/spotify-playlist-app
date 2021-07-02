@@ -48,7 +48,7 @@ export const AddPlaylist = (): JSX.Element => {
             <input
               type="submit"
               value="Save!"
-              disabled={!formTitle || !(formTitle.length > 4)}
+              disabled={!formTitle || !(formTitle.length >= 4)}
             />
           </form>
         </div>

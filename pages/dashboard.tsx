@@ -36,8 +36,10 @@ export const Dashboard = (): JSX.Element => {
 
     // User arriving to the dashboard without playlists: redirect
     // to the screen that let's the user create the first playlist
-    if (!storedPlaylists || storedPlaylists.length === 0)
+    if (!storedPlaylists || storedPlaylists.length === 0) {
       Router.push('/addPlaylist?first=true')
+      return
+    }
 
     // User arriving to the dashboard, had some playlists from a
     // previous visit: let's load them from storage

@@ -177,7 +177,7 @@ const Sidebar = ({
         }
 
         .card h3 {
-          margin: 0 0 1rem 0;
+          margin: 0;
           font-size: 18px;
           max-width: 90%;
           text-overflow: ellipsis;
