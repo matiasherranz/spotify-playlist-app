@@ -45,8 +45,8 @@ const Sidebar = ({
 
           <div className="info-card">
             <p className="info-card-text">
-              💡 Click a playlist above to see the songs it has. You can also
-              add it new ones!
+              💡 Click a playlist above to see its songs. You can also add it
+              new ones!
             </p>
           </div>
 
@@ -151,14 +151,12 @@ const Sidebar = ({
         }
 
         .card {
-          margin-top: 5px
+          margin-top: 5px;
           margin-bottom: 5px;
           display: flex;
           justify-content: center;
-
           flex-basis: 80%;
           padding: 10px;
-
           color: inherit;
           text-decoration: none;
           border: 1px solid #eaeaea;
