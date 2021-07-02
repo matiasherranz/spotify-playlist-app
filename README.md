@@ -112,7 +112,7 @@ Or deploy it to a Vercel's Now server right from GitHub following [this steps](h
 To run the tests, use the following command:
 
 ```bash
-npm run jest
+npm run test
 ```
 
 This will run all tests, which includes:
@@ -121,8 +121,13 @@ This will run all tests, which includes:
 - **Unit tests**
 - Coverage tests.
 
-#### The tools/libraries used for testing were:
+#### The tools/libraries used for testing were
 
 - **Jest** [link](https://jestjs.io/): Jest is the main JavaScript testing framework I used, as it provides a complete and simple to use set of tools, including snapshot testing, coverage testing and easy mocking.
-- **Enzyme** [link](https://enzymejs.github.io/enzyme/): Alongside Jest, I used Enzyme for rendering components, query and interact with the virtual DOM. Enzyme is a JavaScript Testing utility for React that makes it easier to test your React Components' output. You can also manipulate, traverse, and in some ways simulate runtime given the output.
-- **redux-mock-store:** [link](https://github.com/reduxjs/redux-mock-store) A mock store for testing Redux async action creators and middleware.
+- **react-testing-library** [link](https://testing-library.com/docs/react-testing-library/intro/): The @testing-library family of packages helps you test UI components in a user-centric way. The core library, DOM Testing Library, is a light-weight solution for testing web pages by querying and interacting with DOM nodes (whether simulated with JSDOM/Jest or in the browser). The main utilities it provides involve querying the DOM for nodes in a way that's similar to how the user finds elements on the page. In this way, the library helps ensure your tests give you confidence that your application will work when a real user uses it.
+
+#### What else would I add to the tests?
+
+The next step to improve the testing of this app would be adding Enzyme.
+
+- **Enzyme** [link](https://enzymejs.github.io/enzyme/): Alongside Jest, Enzyme can be used for rendering components, query and interact with the virtual DOM. Enzyme is a JavaScript Testing utility for React that makes it easier to test your React Components' output. You can also manipulate, traverse, and in some ways simulate runtime given the output.
