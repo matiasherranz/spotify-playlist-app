@@ -24,7 +24,9 @@ type APIResponseType = {
   progress_ms: number
 }
 
-export const getCurrentlyPlaying = async (token: string) => {
+export const getCurrentlyPlaying = async (
+  token: string
+): Promise<APIResponseType | null> => {
   const data: APIResponseType = await getData(SPOTIFY_PLAYER_URL, token)
   if (!data) return null
 
