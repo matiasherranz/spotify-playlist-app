@@ -6,11 +6,13 @@ const defaultPlaylistTitle = 'Select a playlist on the left to see its songs 3!'
 interface IPlaylistDetail {
   playlist: PlaylistType
   removeSong: (id: number) => void
+  removePlaylist: (id: string) => void
 }
 
 const PlaylistDetail = ({
   playlist,
   removeSong,
+  removePlaylist,
 }: IPlaylistDetail): JSX.Element => {
   if (!playlist) return null
 
@@ -18,6 +20,12 @@ const PlaylistDetail = ({
     <div className="playlist-detail">
       <div className="content">
         <h1>Title: {playlist ? playlist.title : defaultPlaylistTitle}</h1>
+        <div
+          className="removePlaylist"
+          onClick={() => removePlaylist(playlist.id)}
+        >
+          ❌ Remove playlist
+        </div>
         <h1>Songs:</h1>
         {!playlist.songs.length && (
           <p>This playlist has no songs yet! Why not adding some? ➕ 📻 😃 </p>

@@ -2,20 +2,18 @@ import { useState } from 'react'
 
 import NowPlaying from './NowPlaying'
 import { PlaylistsDataType } from '../utils/sessionStorage'
-import { SongType } from '../utils/types'
+import { CurrentSongDataType } from '../utils/types'
 
 interface ISidebar {
   playlists: PlaylistsDataType
-  removePlaylist: (id: string) => void
   selectPlaylist: (id: string) => void
-  addSongToPlaylist: (song: SongType, playlist: string) => void
+  addSongToPlaylist: (song: CurrentSongDataType, playlist: string) => void
   selectedPlaylist: string
   token: string
 }
 
 const Sidebar = ({
   playlists,
-  removePlaylist,
   selectPlaylist,
   selectedPlaylist,
   addSongToPlaylist,
@@ -23,7 +21,7 @@ const Sidebar = ({
 }: ISidebar): JSX.Element => {
   if (!playlists) return null
 
-  const [currentSong, setCurrentSong] = useState()
+  const [currentSong, setCurrentSong] = useState<CurrentSongDataType>()
 
   return (
     <div className="sidebar">
@@ -40,7 +38,6 @@ const Sidebar = ({
                   onClick={() => selectPlaylist(pl.id)}
                 >
                   <h3>{pl.title}</h3>
-                  {/* <p>This playlist has {pl.songs.length} songs</p> */}
                 </div>
               )
             })}
@@ -92,6 +89,13 @@ const Sidebar = ({
 
         .playlists::-webkit-scrollbar {
           display: none; /* for Chrome, Safari, and Opera */
+        }
+
+        div.removePlaylist {
+          cursor: pointer;
+          font-size: 14px;
+          position: relative;
+          width: fit-content;
         }
 
         .btn {
@@ -149,9 +153,12 @@ const Sidebar = ({
         .card {
           margin-top: 5px;
           margin-bottom: 5px;
+          display: flex;
+          justify-content: center;
+
           flex-basis: 80%;
           padding: 10px;
-          text-align: left;
+
           color: inherit;
           text-decoration: none;
           border: 1px solid #eaeaea;

@@ -1,5 +1,5 @@
 import { generateHash } from '.'
-import { PlaylistType } from './types'
+import { CurrentSongDataType, PlaylistType } from './types'
 
 export type PlaylistsDataType = PlaylistType[]
 
@@ -26,7 +26,7 @@ export const addNewPlaylist = (title: string): void => {
 
 export const addSongToPlaylist = (
   playlistId: string,
-  song: ApiSongType
+  song: CurrentSongDataType
 ): PlaylistType[] => {
   const playlists = getFromStorage('playlists')
 
@@ -37,6 +37,28 @@ export const addSongToPlaylist = (
         artist: song.item.artists[0].name,
         name: song.item.name,
       })
+    }
+  })
+  saveToStorage('playlists', playlists)
+  return playlists
+}
+
+export const removePlaylist = (id: string): PlaylistType[] => {
+  const playlists = getFromStorage('playlists')
+  const filtered = playlists.filter((pl) => pl.id !== id)
+
+  saveToStorage('playlists', filtered)
+  return filtered
+}
+
+export const removeSongfromPlaylist = (
+  playlistId: string,
+  index: number
+): PlaylistType[] => {
+  const playlists = getFromStorage('playlists')
+  playlists.map((pl) => {
+    if (pl.id === playlistId) {
+      pl.songs.splice(index, 1)
     }
   })
   saveToStorage('playlists', playlists)

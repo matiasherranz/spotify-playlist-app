@@ -13,6 +13,7 @@ import {
   PlaylistsDataType,
   addSongToPlaylist,
   removeSongfromPlaylist,
+  removePlaylist,
 } from '../utils/sessionStorage'
 import { CurrentSongDataType } from '../utils/types'
 
@@ -35,7 +36,8 @@ export const Dashboard = (): JSX.Element => {
 
     // User arriving to the dashboard without playlists: redirect
     // to the screen that let's the user create the first playlist
-    if (!storedPlaylists) Router.push('/addPlaylist?first=true')
+    if (!storedPlaylists || storedPlaylists.length === 0)
+      Router.push('/addPlaylist?first=true')
 
     // User arriving to the dashboard, had some playlists from a
     // previous visit: let's load them from storage
@@ -48,7 +50,7 @@ export const Dashboard = (): JSX.Element => {
   }, [])
 
   const handleRemovePlaylist = (id: string) => {
-    const filtered: PlaylistsDataType = playlists.filter((pl) => pl.id !== id)
+    const filtered: PlaylistsDataType = removePlaylist(id)
 
     if (filtered.length > 0) {
       setSelectedPlaylist(filtered[0].id)
@@ -106,7 +108,6 @@ export const Dashboard = (): JSX.Element => {
       <article role="main">
         <Sidebar
           playlists={playlists}
-          removePlaylist={handleRemovePlaylist}
           selectPlaylist={handleSelectPlaylist}
           selectedPlaylist={selectedPlaylist}
           addSongToPlaylist={handleAddSongToPlaylist}
@@ -115,6 +116,7 @@ export const Dashboard = (): JSX.Element => {
         <PlaylistDetail
           playlist={selectedPlaylistData}
           removeSong={handleRemoveSong}
+          removePlaylist={handleRemovePlaylist}
         />
       </article>
 
