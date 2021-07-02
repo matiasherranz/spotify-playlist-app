@@ -3,6 +3,7 @@ import Router from 'next/router'
 import { useEffect, useState } from 'react'
 import { getCurrentlyPlaying } from '../utils/spotifyApi'
 import { POLLING_INTERVAL } from '../utils/constants'
+import { deleteCookie } from '../utils/cookieStorage'
 
 interface INowPlaying {
   token: string
@@ -11,6 +12,7 @@ interface INowPlaying {
 const NowPlaying = ({ token }: INowPlaying): JSX.Element => {
   const [timeoutHandler, setTimeoutHandler] = useState()
   const [currentSong, setCurrentSong] = useState()
+  const [isPlaying, setIsPlaying] = useState(false)
 
   useEffect(() => {
     // Set polling interval and start polling
@@ -25,47 +27,81 @@ const NowPlaying = ({ token }: INowPlaying): JSX.Element => {
     if (token) {
       try {
         const song = await getCurrentlyPlaying(token)
-        setCurrentSong(song)
+        if (!song) {
+          setIsPlaying(false)
+        } else {
+          setIsPlaying(true)
+          setCurrentSong(song)
+        }
       } catch (e) {
-        // Token expired. Let's take the user to the login screen
         console.error(e)
+
+        // Token expired. Let's remove the cookie and take the
+        // user to the login screen
+        deleteCookie('token')
         Router.push('/')
       }
     }
   }
 
-  if (!currentSong) {
-    return null
-  }
-  const song = currentSong.item
-
-  const backgroundStyles = {
-    backgroundImage: currentSong ? `url(${song.album.images[0].url})` : '',
-  }
-
-  const progressBarStyles = {
-    width: currentSong
-      ? (currentSong.progress_ms * 100) / song.duration_ms + '%'
-      : '0%',
+  let song = {}
+  let backgroundStyles = {}
+  let progressBarStyles = {}
+  if (currentSong) {
+    song = currentSong.item
+    backgroundStyles = {
+      backgroundImage: currentSong ? `url(${song.album.images[0].url})` : '',
+    }
+    progressBarStyles = {
+      width: currentSong
+        ? (currentSong.progress_ms * 100) / song.duration_ms + '%'
+        : '0%',
+    }
   }
 
   return (
     <div className="now-playing">
-      <div className="now-playing-cover">
-        <img src={song.album.images[0].url} />
-      </div>
-      <div className="now-playing-info">
-        <div className="now-playing-name">{song.name}</div>
-        <div className="now-playing-artist">{song.artists[0].name}</div>
-        <div className="now-playing-status">
-          {currentSong.is_playing ? '▶️ Playing' : '⏸ Paused'}
+      {/* User is not playing anything on Spotify */}
+      {!currentSong && (
+        <div className="not-playing-msg">
+          <div className="now-playing-name">Loading...</div>
+          <div className="now-playing-artist">
+            Looking for the song you are playing on Spotify. Hang tight! :-)
+          </div>
         </div>
-        <div className="progress">
-          <div className="progress-bar" style={progressBarStyles} />
-        </div>
-      </div>
-      <div className="background" style={backgroundStyles} />
+      )}
 
+      {/* User is playing a song */}
+      {currentSong && isPlaying && (
+        <>
+          <div className="now-playing-cover">
+            <img src={song.album.images[0].url} />
+          </div>
+          <div className="now-playing-info">
+            <div className="now-playing-name">{song.name}</div>
+            <div className="now-playing-artist">{song.artists[0].name}</div>
+            <div className="now-playing-status">
+              {currentSong.is_playing ? '▶️ Playing' : '⏸ Paused'}
+            </div>
+            <div className="progress">
+              <div className="progress-bar" style={progressBarStyles} />
+            </div>
+          </div>
+          <div className="background" style={backgroundStyles} />
+        </>
+      )}
+
+      {/* User was playing a song and paused it */}
+      {currentSong && !isPlaying && (
+        <>
+          <div className="not-playing-msg">
+            <div className="now-playing-name">Go play music on Spotify!</div>
+            <div className="now-playing-artist">
+              Go to Spotify, play something and it will show up here :-)
+            </div>
+          </div>
+        </>
+      )}
       <style jsx>{`
         .now-playing {
           align-items: center;
@@ -74,26 +110,33 @@ const NowPlaying = ({ token }: INowPlaying): JSX.Element => {
           margin: 0 auto;
           justify-content: center;
           position: relative;
-          width: 80%;
+          width: 100%;
           z-index: 1;
+          border: 2px solid #eaeaea;
+          border-radius: 10px;
         }
 
         .now-playing-name {
-          font-size: 1.2em;
-          margin-bottom: 0.2em;
+          font-size: 1em;
+          margin-bottom: 5px;
+          margin-top: 5px;
+          font-weight: bold;
         }
 
         .now-playing-artist {
-          margin-bottom: 1em;
+          margin-bottom: 10px;
         }
 
         .now-playing-status {
-          margin-bottom: 1em;
+          margin-bottom: 5px;
         }
 
         .now-playing-cover {
           float: left;
-          margin-right: 10px;
+          margin-right: 15px;
+          margin-top: 10px;
+          margin-left: 5px;
+          margin-bottom: 5px;
           text-align: right;
           width: 45%;
         }
@@ -101,11 +144,15 @@ const NowPlaying = ({ token }: INowPlaying): JSX.Element => {
         .now-playing-cover img {
           max-width: 80vmin;
           width: 100%;
+          border-radius: 10px;
         }
 
         .now-playing-info {
-          margin-left: 5%;
           width: 45%;
+        }
+
+        .not-playing-msg {
+          width: 95%;
         }
 
         * {
