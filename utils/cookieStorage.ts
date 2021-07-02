@@ -29,3 +29,8 @@ export const getCookie = (cname: string): string => {
   }
   return ''
 }
+
+export const deleteCookie = (cname: string): void => {
+  const expiredDate = 'expires=Thu, 01 Jan 1970 00:00:00 UTC'
+  document.cookie = `${cname}=${''};${expiredDate};path=/`
+}
