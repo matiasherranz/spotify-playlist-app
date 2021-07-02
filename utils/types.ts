@@ -10,16 +10,21 @@ export type PlaylistType = {
   songs: SongType[]
 }
 
-export type ApiSongType = {
-  item: {
-    album: {
-      images: {
-        url: string
-      }[]
-    }
-    artists: {
-      name: string
+export type SongItemType = {
+  album: {
+    images: {
+      url: string
     }[]
-    name: string
   }
+  artists: {
+    name: string
+  }[]
+  name: string
+  duration_ms: number
+}
+
+export type CurrentSongDataType = {
+  item: SongItemType
+  is_playing: boolean
+  progress_ms: number
 }
