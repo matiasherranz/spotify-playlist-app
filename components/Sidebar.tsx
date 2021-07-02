@@ -28,12 +28,37 @@ const Sidebar = ({
               </div>
             )
           })}
+
+          <div className="card-no-border">
+            <a className="btn" href="/addPlaylist">
+              Create new playlist
+            </a>
+          </div>
+
           <NowPlaying token={token} />
         </aside>
       </article>
 
       <style jsx>{`
         .sidebar {
+        }
+
+        .btn {
+          background-color: transparent;
+          border-radius: 2em;
+          border: 0.2em solid #1ecd97;
+          color: #1ecd97;
+          cursor: pointer;
+          font-size: 2vmin;
+          padding: 0.7em 1.5em;
+          text-transform: uppercase;
+          transition: all 0.25s ease;
+          text-decoration: none;
+        }
+
+        .btn:hover {
+          background: #1ecd97;
+          color: #333;
         }
 
         .sidebarTitle {
@@ -45,14 +70,24 @@ const Sidebar = ({
         aside {
           float: left;
           width: 30%;
-          /* color: #ccc; */
-          /* background-color: #d3e4c4; */
           border-radius: 4px;
           padding: 10px;
         }
 
+        .card-no-border {
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+          margin-left: 20px;
+          flex-basis: 80%;
+          padding: 1.2rem;
+          color: inherit;
+          text-decoration: none;
+          transition: color 0.15s ease, border-color 0.15s ease;
+        }
+
         .card {
-          margin: 1rem;
+          margin-top: 1rem;
+          margin-bottom: 1rem;
           flex-basis: 80%;
           padding: 1.2rem;
           text-align: left;
