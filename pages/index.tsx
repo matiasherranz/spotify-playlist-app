@@ -56,7 +56,7 @@ export const Home = (): JSX.Element => {
           To get started, go ahead and login by clicking the button below.
         </p>
 
-        <a className="btn btn--loginApp-link" href={SPOTIFY_AUTH_URL}>
+        <a className="btn" href={SPOTIFY_AUTH_URL}>
           Login to Spotify
         </a>
       </main>
@@ -129,10 +129,6 @@ export const Home = (): JSX.Element => {
         .btn:hover {
           background: #1ecd97;
           color: #333;
-        }
-
-        .btn--login {
-          margin: 0 auto;
         }
 
         footer {
