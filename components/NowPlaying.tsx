@@ -4,20 +4,22 @@ import { useEffect, useState } from 'react'
 import { getCurrentlyPlaying } from '../utils/spotifyApi'
 import { POLLING_INTERVAL } from '../utils/constants'
 import { deleteCookie } from '../utils/cookieStorage'
-import { ApiSongType, SongType } from '../utils/types'
+import { SongItemType, CurrentSongDataType } from '../utils/types'
 
 interface INowPlaying {
   token: string
-  currentSong: SongType
-  setCurrentSong: (song) => void
+  currentSong: CurrentSongDataType
+  setCurrentSong: (song: CurrentSongDataType) => void
 }
+
+type TimeoutType = ReturnType<typeof setTimeout> | null
 
 const NowPlaying = ({
   token,
   currentSong,
   setCurrentSong,
 }: INowPlaying): JSX.Element => {
-  const [timeoutHandler, setTimeoutHandler] = useState()
+  const [timeoutHandler, setTimeoutHandler] = useState<TimeoutType>()
   const [isPlaying, setIsPlaying] = useState(false)
 
   useEffect(() => {
@@ -32,7 +34,7 @@ const NowPlaying = ({
   const tick = async () => {
     if (token) {
       try {
-        const song = await getCurrentlyPlaying(token)
+        const song: CurrentSongDataType = await getCurrentlyPlaying(token)
         if (!song) {
           setIsPlaying(false)
         } else {
@@ -50,17 +52,19 @@ const NowPlaying = ({
     }
   }
 
-  let song = {}
+  let songItem: SongItemType = null
   let backgroundStyles = {}
   let progressBarStyles = {}
   if (currentSong) {
-    song = currentSong.item
+    songItem = currentSong.item
     backgroundStyles = {
-      backgroundImage: currentSong ? `url(${song.album.images[0].url})` : '',
+      backgroundImage: currentSong
+        ? `url(${songItem.album.images[0].url})`
+        : '',
     }
     progressBarStyles = {
       width: currentSong
-        ? (currentSong.progress_ms * 100) / song.duration_ms + '%'
+        ? (currentSong.progress_ms * 100) / songItem.duration_ms + '%'
         : '0%',
     }
   }
@@ -81,11 +85,11 @@ const NowPlaying = ({
       {currentSong && isPlaying && (
         <>
           <div className="now-playing-cover">
-            <img src={song.album.images[0].url} />
+            <img src={songItem.album.images[0].url} />
           </div>
           <div className="now-playing-info">
-            <div className="now-playing-name">{song.name}</div>
-            <div className="now-playing-artist">{song.artists[0].name}</div>
+            <div className="now-playing-name">{songItem.name}</div>
+            <div className="now-playing-artist">{songItem.artists[0].name}</div>
             <div className="now-playing-status">
               {currentSong.is_playing ? '▶️ Playing' : '⏸ Paused'}
             </div>
