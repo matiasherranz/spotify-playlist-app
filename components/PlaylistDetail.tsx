@@ -1,15 +1,17 @@
-import { SyntheticEvent } from 'react'
-
-import { removePlaylist } from '../utils/sessionStorage'
+import { generateHash } from '../utils'
 import { PlaylistType } from '../utils/types'
 
 const defaultPlaylistTitle = 'Select a playlist on the left to see its songs 3!'
 
 interface IPlaylistDetail {
   playlist: PlaylistType
+  removeSong: (id: number) => void
 }
 
-const PlaylistDetail = ({ playlist }: IPlaylistDetail): JSX.Element => {
+const PlaylistDetail = ({
+  playlist,
+  removeSong,
+}: IPlaylistDetail): JSX.Element => {
   if (!playlist) return null
 
   return (
@@ -21,15 +23,20 @@ const PlaylistDetail = ({ playlist }: IPlaylistDetail): JSX.Element => {
           <p>This playlist has no songs yet! Why not adding some? ➕ 📻 😃 </p>
         )}
 
-        {playlist.songs.map((song) => {
+        {playlist.songs.map((song, index) => {
           return (
-            <div className="song" key={song.name}>
+            // Create a random id to let the user repeat the song
+            <div className="song" key={generateHash(6)}>
               <div className="song-cover">
                 <img src={song.albumCover} />
               </div>
               <div className="song-info">
                 <div className="song-name">{song.name}</div>
                 <div className="song-artist">{song.artist}</div>
+                <div className="removeSong" onClick={() => removeSong(index)}>
+                  {' '}
+                  ❌ Remove song{' '}
+                </div>
               </div>
               <div
                 className="background"
@@ -55,6 +62,10 @@ const PlaylistDetail = ({ playlist }: IPlaylistDetail): JSX.Element => {
           border: 1px solid #eaeaea;
           border-radius: 10px;
           min-height: 90vh;
+        }
+
+        .removeSong {
+          cursor: pointer;
         }
 
         .song {
