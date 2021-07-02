@@ -114,7 +114,7 @@ npm install
 npm run dev
 ```
 
-Then go to [localhost:3000](localhost:3000) on your browser to see the project in action!
+Then go to [http://localhost:3000/](http://localhost:3000/) on your browser to see the project in action!
 
 ### Run the project in production mode
 
