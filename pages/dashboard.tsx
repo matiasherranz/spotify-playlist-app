@@ -5,14 +5,15 @@ import Router from 'next/router'
 
 import Footer from '../components/Footer'
 import Sidebar from '../components/Sidebar'
+import PlaylistDetail from '../components/PlaylistDetail'
 import { getCookie } from '../utils/cookieStorage'
 import {
   getFromStorage,
   saveToStorage,
   PlaylistsDataType,
+  addSongToPlaylist,
 } from '../utils/sessionStorage'
-
-const defaultPlaylistTitle = 'Select a playlist on the left to see its songs!'
+import { SongType } from '../utils/types'
 
 export const Dashboard = (): JSX.Element => {
   const [selectedPlaylist, setSelectedPlaylist] = useState<string>()
@@ -39,8 +40,8 @@ export const Dashboard = (): JSX.Element => {
     // previous visit: let's load them from storage
     setPlaylists(storedPlaylists)
 
-    // The user has just one playlist. Let's select this one by default
-    if (storedPlaylists.length === 1) {
+    // The user has some playlists, let's select the first one by default
+    if (storedPlaylists.length >= 1) {
       setSelectedPlaylist(storedPlaylists[0].id)
     }
   }, [])
@@ -55,6 +56,21 @@ export const Dashboard = (): JSX.Element => {
     saveToStorage('playlists', filtered)
   }
 
+  const handleSelectPlaylist = (id: string) => {
+    setSelectedPlaylist(id)
+  }
+
+  const handleAddSongToPlaylist = (song: SongType, playlist: string): void => {
+    // Update storage
+    const updatedPlayslists = addSongToPlaylist(playlist, song)
+
+    // Update state
+    setPlaylists(updatedPlayslists)
+
+    // Keep the updated playlist selected
+    setSelectedPlaylist(playlist)
+  }
+
   return (
     <div className="container">
       <Head>
@@ -66,23 +82,18 @@ export const Dashboard = (): JSX.Element => {
         <Sidebar
           playlists={playlists}
           removePlaylist={handleRemovePlaylist}
+          selectPlaylist={handleSelectPlaylist}
+          selectedPlaylist={selectedPlaylist}
+          addSongToPlaylist={handleAddSongToPlaylist}
           token={authToken}
         />
-        <div className="content">
-          <h1>
-            {selectedPlaylist ? selectedPlaylist.title : defaultPlaylistTitle}
-          </h1>
-          <p>
-            Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi
-            welsh onion daikon amaranth tatsoi tomatillo melon azuki bean
-            garlic.
-          </p>
-          <p>
-            Gumbo beet greens corn soko endive gumbo gourd. Parsley shallot
-            courgette tatsoi pea sprouts fava bean collard greens dandelion okra
-            wakame tomato. Dandelion cucumber earthnut pea peanut soko zucchini.
-          </p>
-        </div>
+        <PlaylistDetail
+          playlist={
+            playlists
+              ? playlists.find((pl) => pl.id === selectedPlaylist)
+              : undefined
+          }
+        />
       </article>
 
       <Footer />
@@ -109,15 +120,6 @@ export const Dashboard = (): JSX.Element => {
           content: '';
           clear: both;
           display: block;
-        }
-
-        .content {
-          float: right;
-          width: 69%;
-          /* color: #ccc; */
-          border-radius: 4px;
-          padding: 10px;
-          /* height: calc(90vh - 100px); */
         }
       `}</style>
 
