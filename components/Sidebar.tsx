@@ -27,7 +27,8 @@ const Sidebar = ({
     <div className="sidebar">
       <article role="main">
         <aside>
-          <div className="playlists">
+          <div className="arrow-up" />
+          <div className="playlists playlists-borders">
             {playlists.map((pl) => {
               return (
                 <div
@@ -42,6 +43,7 @@ const Sidebar = ({
               )
             })}
           </div>
+          <div className="arrow-down" />
 
           <div className="info-card">
             <p className="info-card-text">
@@ -187,6 +189,28 @@ const Sidebar = ({
           margin: 0;
           font-size: 1.25rem;
           line-height: 1.5;
+        }
+
+        .arrow-up {
+          margin: 0 auto;
+          margin-bottom: 2px;
+          width: 0;
+          height: 0;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+
+          border-bottom: 10px solid black;
+        }
+
+        .arrow-down {
+          margin: 0 auto;
+          margin-top: 2px;
+          width: 0;
+          height: 0;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+
+          border-top: 10px solid black;
         }
       `}</style>
     </div>
