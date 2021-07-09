@@ -73,9 +73,15 @@ const Sidebar = ({
 
           <div
             className="card-no-border"
-            onClick={() => addSongToPlaylist(currentSong, selectedPlaylist)}
+            onClick={(event) =>
+              currentSong
+                ? addSongToPlaylist(currentSong, selectedPlaylist)
+                : event.preventDefault()
+            }
           >
-            <a className="btn">Add song</a>
+            <a className={`btn ${currentSong ? '' : 'btn-disabled'}`}>
+              {currentSong ? 'Add Song' : 'Hang in there...'}
+            </a>
           </div>
         </aside>
       </article>
@@ -109,6 +115,12 @@ const Sidebar = ({
           font-size: 14px;
           position: relative;
           width: fit-content;
+        }
+
+        a.btn-disabled {
+          pointer-events: none;
+          border: 0.2em solid grey;
+          color: grey;
         }
 
         .btn {
