@@ -93,6 +93,17 @@ const Sidebar = ({
           display: none; /* for Chrome, Safari, and Opera */
         }
 
+        .playlists-borders {
+          /* box-shadow: 0 15px 30px 0 rgb(0 0 0 / 11%),
+            0 5px 15px 0 rgb(0 0 0 / 8%); */
+          background-color: #ffffff;
+          border-radius: 0.5rem;
+          border-left: 0 solid #00ff99;
+          /* transition: border-left 300ms ease-in-out,
+            padding-left 300ms ease-in-out; */
+          padding: 10px;
+        }
+
         div.removePlaylist {
           cursor: pointer;
           font-size: 14px;
