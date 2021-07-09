@@ -44,8 +44,15 @@ const NowPlaying = ({
       } catch (e) {
         console.error(e)
 
-        // Token expired. Let's remove the cookie and take the
-        // user to the login screen
+        // Token expired. Let's remove the cookie, clear the timeout
+        // and take the user to the login screen.
+        // TODO: There could be other API errors apart from the one caused
+        //       by the expired token (like a 403). Also, for expired tokens
+        //       we could use the refresh token (that is currently not stored
+        //       alongside the access token) to get a new access token. We just
+        //       asume the simplest scenario here for the sake of not getting the
+        //       logic too intricated.
+        clearInterval(timeoutHandler)
         deleteCookie('token')
         Router.push('/')
       }
