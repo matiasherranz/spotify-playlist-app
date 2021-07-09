@@ -27,7 +27,8 @@ const Sidebar = ({
     <div className="sidebar">
       <article role="main">
         <aside>
-          <div className="playlists">
+          <div className="arrow-up" />
+          <div className="playlists playlists-borders">
             {playlists.map((pl) => {
               return (
                 <div
@@ -42,6 +43,7 @@ const Sidebar = ({
               )
             })}
           </div>
+          <div className="arrow-down" />
 
           <div className="info-card">
             <p className="info-card-text">
@@ -71,9 +73,15 @@ const Sidebar = ({
 
           <div
             className="card-no-border"
-            onClick={() => addSongToPlaylist(currentSong, selectedPlaylist)}
+            onClick={(event) =>
+              currentSong
+                ? addSongToPlaylist(currentSong, selectedPlaylist)
+                : event.preventDefault()
+            }
           >
-            <a className="btn">Add song</a>
+            <a className={`btn ${currentSong ? '' : 'btn-disabled'}`}>
+              {currentSong ? 'Add Song' : 'Hang in there...'}
+            </a>
           </div>
         </aside>
       </article>
@@ -91,11 +99,28 @@ const Sidebar = ({
           display: none; /* for Chrome, Safari, and Opera */
         }
 
+        .playlists-borders {
+          /* box-shadow: 0 15px 30px 0 rgb(0 0 0 / 11%),
+            0 5px 15px 0 rgb(0 0 0 / 8%); */
+          background-color: #ffffff;
+          border-radius: 0.5rem;
+          border-left: 0 solid #00ff99;
+          /* transition: border-left 300ms ease-in-out,
+            padding-left 300ms ease-in-out; */
+          padding: 10px;
+        }
+
         div.removePlaylist {
           cursor: pointer;
           font-size: 14px;
           position: relative;
           width: fit-content;
+        }
+
+        a.btn-disabled {
+          pointer-events: none;
+          border: 0.2em solid grey;
+          color: grey;
         }
 
         .btn {
@@ -187,6 +212,28 @@ const Sidebar = ({
           margin: 0;
           font-size: 1.25rem;
           line-height: 1.5;
+        }
+
+        .arrow-up {
+          margin: 0 auto;
+          margin-bottom: 2px;
+          width: 0;
+          height: 0;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+
+          border-bottom: 10px solid black;
+        }
+
+        .arrow-down {
+          margin: 0 auto;
+          margin-top: 2px;
+          width: 0;
+          height: 0;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+
+          border-top: 10px solid black;
         }
       `}</style>
     </div>
