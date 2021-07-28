@@ -29,7 +29,7 @@ For the subsequent playlists after the first one
 
 ### NodeJS
 
-The node version used id 15 (v15.13.0 to be precise). To set it, I use `nvm` like this:
+The node version used is 15 (v15.13.0 to be precise). To set it, I use `nvm` like this:
 
 ```bash
 $ nvm use 15.13.0
